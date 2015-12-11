@@ -106,9 +106,11 @@ function getFileList(srcFolder, destFolder) {
         var files = file.scanFolder(srcFolder);
         if (destFolder) {
             destFolder = correctPath(destFolder);
-            files.folder.forEach(function(val) {
-                file.createFolder(path.join(destFolder, path.relative(srcFolder, val))); //创建目录
-            });
+            if(files.folder) {
+                files.folder.forEach(function(val) {
+                    file.createFolder(path.join(destFolder, path.relative(srcFolder, val))); //创建目录
+                 });
+            }
         }
 
         files.files.forEach(function(val) {
@@ -202,7 +204,7 @@ function doTranslate(file, savepath) { //执行翻译
 function translatePage(srcdir, saveTo) { //翻译入口
     if (srcdir && typeof srcdir == 'string' && fs.statSync(srcdir).isDirectory()) { //如果是目录,先扫描目录
         getFileList(srcdir, saveTo);
-        fileList.forEach(function(val) {
+        gfileList.forEach(function(val) {
             doTranslate(val, val.fileName.replace(srcdir, saveTo));
         });
     } else {
